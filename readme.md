@@ -1,5 +1,7 @@
 # Laboratoire 1 6GEI466
 
+Version Python: 3.12.6
+
 ## Description générale
 
 Le premier laboratoire du cours 6GEI466 comprend créer un server web Flask qui permet la récupération de pages HTML, ainsi que remplir un formulaire et envoyer des données avec la méthode POST.
