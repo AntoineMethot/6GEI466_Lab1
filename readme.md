@@ -4,24 +4,54 @@ Version Python: 3.12.6
 
 ## Description générale
 
-Le premier laboratoire du cours 6GEI466 comprend créer un server web Flask qui permet la récupération de pages HTML, ainsi que remplir un formulaire et envoyer des données avec la méthode POST.
+Le premier laboratoire du cours 6GEI466 consiste à créer un serveur web Flask permettant la récupération de pages HTML, ainsi que la soumission d’un formulaire et l’envoi de données à l’aide de la méthode POST.
 
 ## Démarrage du serveur
-Le serveur peut être démarré en naviguant dans le réportoire où se trouve le fichier main.py et en exécutant `python .\main.py` ou en installant l'extension python dans vscode. Dans tous les cas, il faut avoir un environnement virtuel avec les dépendances contenu dans requirements.txt (installable avec `pip install -r requirements.txt`)
+Le serveur peut être démarré en se plaçant dans le répertoire contenant le fichier `main.py` et en exécutant la commande : `python .\main.py` 
+Il est également possible d’utiliser l’extension Python de Visual Studio Code.  
+Dans tous les cas, un environnement virtuel doit être configuré et les dépendances doivent être installées à partir du fichier `requirements.txt` à l’aide de la commande :
+
+
 
 ## Routes
 ### /static/*
-Pour la route /static/*. une route a été crée pour retourner un fichier html avec le nom correspondant à *. La bonne pratique en python et en Flash pour retourner une page static html est d'utiliser la fonction `send_from_directory()`. La route /static/* permet uniquement des GET.
+La route `/static/*` permet de retourner un fichier HTML statique dont le nom correspond à `*`.  
+Une route explicite a été créée afin de respecter le comportement demandé dans l’énoncé.  
+La fonction `send_from_directory()` de Flask est utilisée pour retourner les fichiers HTML statiques, ce qui constitue une solution appropriée pour ce type de contenu.  
+Cette route accepte uniquement la méthode GET.
 
-Pour l'instant il n'y a que 2 fichiers static: helloworld1.html et helloworld2.html qui peuvent être récupérée avec /static/helloworldx
+Actuellement, deux fichiers statiques sont disponibles :
+- `helloworld1.html`
+- `helloworld2.html`
+
+Ils peuvent être récupérés à l’aide des routes :  /static/helloworldx
 
 ### /acceuil
 
-Enfin, pour la page d'acceuil, cette route permet les méthodes GET et POST. quand on fait un GET, on charge la page avec le formulaire. Une fois que le formulaire rempli et qu'on l'envoie avec un POST, on charge la page avec un contenu différent qui contient les informations du formulaire. Jinja2 permet des conditions tel que if et else dans le html qui permet d'afficher un contenu différent dépendament de certaines conditions.
+La route `/accueil` accepte les méthodes GET et POST.
+
+- Lors d’une requête GET, la page est chargée avec le formulaire.
+- Lors d’une requête POST, les données du formulaire sont traitées et la page est rechargée avec un contenu différent affichant les informations soumises.
+
+Le moteur de gabarits Jinja2 permet d’utiliser des structures conditionnelles (`if / else`) directement dans le HTML afin d’afficher un contenu différent selon l’état de la requête.
+
 
 ### Gestion des erreurs404
-Flask contient des fonctions intégrées qui permettent de faciliter la gestion des erreurs 404. la fonction app.errorhandler(404) permet justement de capter quand les erreurs 404 ont lieux et on peux préciser de renvoyer la page error404.html que nous avons crée. Maintenant, puisque cette page n'est pas 100% statique, on utilise la fonction de flask `render_template()`. Je capte la route qui a été tenté et je l'inclus dans la page.
+Flask fournit des mécanismes intégrés pour la gestion des erreurs HTTP.  
+La fonction `app.errorhandler(404)` est utilisée afin d’intercepter les erreurs 404 et de retourner le gabarit `erreur404.html`.
+
+Puisque cette page n’est pas entièrement statique, la fonction `render_template()` est utilisée.  
+Le chemin de la route demandée est capté et transmis au gabarit afin d’être affiché à l’utilisateur.
+
 
 ## Sécurité
 
-De base, Jinja2 fait du HTML escaping quand on passe une valeur en string html avec {{ XXX }}. Ceci est déjà un niveau de sécurité. De plus, j'ai intégré une validation de contenu entrée dans le formulaire avec une fonction `validate_content()`, qui vérifie la longeur du champ et qu'il n'y ai pas de caractères spéciaux.
+Par défaut, Jinja2 applique un échappement HTML automatique lors de l’affichage de variables à l’aide de la syntaxe `{{ }}`, ce qui constitue un premier niveau de protection contre les injections de code.
+
+En complément, une fonction `validate_content()` a été implémentée afin de valider les données saisies dans le formulaire. Cette fonction vérifie notamment :
+- la longueur des champs
+- l’absence de caractères spéciaux non désirés
+
+Un mécanisme similaire est utilisé pour l’affichage de la route invalide dans le gabarit de l’erreur 404.  
+Cependant, cette validation est adaptée afin de permettre la présence de chiffres dans l’URL.  
+Une vérification de la longueur est également effectuée afin d’éviter qu’une requête contenant un nombre excessif de caractères ne puisse nuire au serveur.

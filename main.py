@@ -28,7 +28,10 @@ def static_html(name):
 # Gestion des erreurs 404
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template("erreur404.html", path=request.path), 404
+    p = request.path
+    if len(p) > 2000:
+        p = p[:2000] + "…"
+    return render_template("erreur404.html", path=p), 404
 
 
 def validate_content(s: str) -> str:
