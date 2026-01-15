@@ -21,7 +21,7 @@
 
     {% else %}
     <a href="/">changer mon identité</a>
-    <p>Bonjour {{ nom }} de {{ ville }}, bienvenue sur notre site!</p>
+    <p>Bonjour {{ nom | e}} de {{ ville | e}}, bienvenue sur notre site!</p>
     {% endif %}
 
     <br>
