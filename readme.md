@@ -7,10 +7,12 @@ Version Python: 3.12.6
 Le premier laboratoire du cours 6GEI466 consiste à créer un serveur web Flask permettant la récupération de pages HTML, ainsi que la soumission d’un formulaire et l’envoi de données à l’aide de la méthode POST.
 
 ## Démarrage du serveur
-Le serveur peut être démarré en se plaçant dans le répertoire contenant le fichier `main.py` et en exécutant la commande : `python .\main.py` 
+Le serveur peut être démarré localement en se plaçant dans le répertoire contenant le fichier `main.py` et en exécutant la commande : `python .\main.py` 
 Il est également possible d’utiliser l’extension Python de Visual Studio Code.  
-Dans tous les cas, un environnement virtuel doit être configuré et les dépendances doivent être installées à partir du fichier `requirements.txt` à l’aide de la commande :
+Dans tous les cas, un environnement virtuel doit être configuré et les dépendances doivent être installées à partir du fichier `requirements.txt` à l’aide de la commande : `pip install -r requirements.txt`
 
+## Accès au serveur
+Le serveur a été précisé à fonctionner sur le port 8000. Pour y acceder, dans le navigateur il faut inscrire localhost:8000
 
 
 ## Routes
