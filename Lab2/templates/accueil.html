@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Acceuil</title>
+</head>
+
+<body>
+
+    <h1>{{ titre }}</h1>
+
+    {% if not soumis %}
+    <form method="POST" action="/">
+        <label>Nom :</label>
+        <input type="text" name="nom" required>
+
+        <label>Ville :</label>
+        <input type="text" name="ville" required>
+
+        <input type="submit" value="Envoyer">
+    </form>
+
+    {% else %}
+    <a href="/">changer mon identité</a>
+    <p>Bonjour {{ nom | e}} de {{ ville | e}}, bienvenue sur notre site!</p>
+    {% endif %}
+
+    <br>
+
+    <img src="./static/images/chatAvecDents.jpg" style="width: 200px;" alt="Beau chat">
+</body>
+
+</html>
