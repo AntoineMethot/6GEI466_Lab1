@@ -48,6 +48,8 @@ Le chemin de la route demandée est capté et transmis au gabarit afin d’être
 
 ## Sécurité
 
+Avec la lib `pyopenssl`, il est possible de générer des certificats ssl et utiliser le protocole https.
+
 Par défaut, Jinja2 applique un échappement HTML automatique lors de l’affichage de variables à l’aide de la syntaxe `{{ }}`, ce qui constitue un premier niveau de protection contre les injections de code. L'ajout de `| e` dans `{{ }}` est redondant, mais démontre explicitement l'échappement HTML.
 
 En complément, une fonction `validate_content()` a été implémentée afin de valider les données saisies dans le formulaire. Cette fonction vérifie notamment :
