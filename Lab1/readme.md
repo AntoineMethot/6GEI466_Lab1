@@ -36,11 +36,12 @@ Mes fichiers statiques étaient initialement organisés dans `/static/pages/`. C
 
 Flask fournit cette fonctionnalité par défaut, ce qui rend la route explicite inutile. Les fichiers HTML statiques sont maintenant servis directement par Flask.
 
-Actuellement, deux fichiers statiques sont disponibles :
+Actuellement, trois fichiers statiques sont disponibles dans le dossier /static/:
 - `helloworld1.html`
 - `helloworld2.html`
+- `images/chatAvecDents.jpg`
 
-Ils peuvent être récupérés à l'aide des routes :  /static/helloworld1.html et /static/helloworld2.html
+Ils peuvent être récupérés directement à l'aide des routes :  /static/helloworld1.html, /static/helloworld2.html et /static/images/chatAvecDents.jpg
 
 ### /acceuil
 
