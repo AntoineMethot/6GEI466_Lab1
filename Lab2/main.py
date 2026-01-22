@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import send_from_directory, render_template, request, abort
+from flask import render_template, request, abort
 import re
 
 app = Flask(__name__)
@@ -10,9 +10,10 @@ def accueil():
     titre = "Page d’accueil"
 
     if request.method == "POST":
+        prenom = validate_content(request.form.get("prenom", ""))
         nom = validate_content(request.form.get("nom", ""))
-        ville = validate_content(request.form.get("ville", ""))
-        return render_template("accueil.html", titre=titre, soumis=True, nom=nom, ville=ville)
+        date = validate_date(request.form.get("date", ""))
+        return render_template("accueil.html", titre=titre, soumis=True, prenom=prenom, nom=nom, date=date)
 
     return render_template("accueil.html", titre=titre, soumis=False)
 
@@ -36,5 +37,13 @@ def validate_content(s: str) -> str:
         abort(400, "Invalid characters")
     return s
 
+def validate_date(s: str) -> str:
+    # Remove whitespace
+    s = (s or "").strip()
+    # Accept date format MM/DD/YYYY from jQuery datepicker
+    if not re.fullmatch(r"\d{2}/\d{2}/\d{4}", s):
+        abort(400, "Invalid date format")
+    return s
+
 if __name__ == "__main__":
-    app.run(debug=True, port=8000, ssl_context='adhoc')
+    app.run(debug=True, port=8000)

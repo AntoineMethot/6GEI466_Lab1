@@ -14,11 +14,11 @@
 
     {% if not soumis %}
     <form method="POST" action="/">
+        <label>Prénom :</label>
+        <input type="text" name="prenom" required>
+
         <label>Nom :</label>
         <input type="text" name="nom" required>
-
-        <label>Ville :</label>
-        <input type="text" name="ville" required>
 
         <label>Date :</label>
         <input type="text" id="datepicker" name="date" required>
@@ -28,7 +28,7 @@
 
     {% else %}
     <a href="/">changer mon identité</a>
-    <p>Bonjour {{ nom | e}} de {{ ville | e}}, bienvenue sur notre site!</p>
+    <p>Bonjour {{ prenom | e}} {{ nom | e}}, bienvenue sur notre site!</p>
     {% endif %}
 
     <br>
