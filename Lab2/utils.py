@@ -11,13 +11,40 @@ def validate_content(s: str) -> str:
 
 def validate_date(s: str) -> str:
     s = (s or "").strip()
+
+    # Format DD/MM/YYYY
     if not re.fullmatch(r"\d{2}/\d{2}/\d{4}", s):
-        abort(400, "Invalid date format")
+        abort(400, "date invalide")
+
+    day, month, year = map(int, s.split("/"))
+
+    # Mois invalide
+    if month < 1 or month > 12:
+        abort(400, "date invalide")
+
+    # Jours max par mois
+    days_in_month = {
+        1: 31, 2: 28, 3: 31, 4: 30,
+        5: 31, 6: 30, 7: 31, 8: 31,
+        9: 30, 10: 31, 11: 30, 12: 31
+    }
+
+    # Année bissextile
+    if month == 2:
+        is_leap = (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
+        if is_leap:
+            days_in_month[2] = 29
+
+    # Jour invalide
+    if day < 1 or day > days_in_month[month]:
+        abort(400, "date invalide")
+
     return s
+
 
 def get_zodiac_sign(date_str: str) -> str:
     # Dummy implementation for zodiac sign based on date
-    month, day, year = map(int, date_str.split('/'))
+    day, month, year = map(int, date_str.split('/'))
     if (month == 3 and day >= 21) or (month == 4 and day <= 19):
         return "Aries"
     elif (month == 4 and day >= 20) or (month == 5 and day <= 20):

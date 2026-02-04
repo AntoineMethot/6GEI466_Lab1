@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, abort, jsonify
+from flask import render_template, request, jsonify
 from utils import *
 
 app = Flask(__name__)
@@ -7,35 +7,45 @@ app = Flask(__name__)
 # Route principale avec GET
 @app.route("/", methods=["GET"])
 def accueil():
-    return render_template("accueil.html")
+    Titre = "HOROSCOPE"
+    return render_template("accueil.html", titre=Titre)
 
 
 # Horoscope route - handles AJAX POST request
+from flask import jsonify
+
 @app.route("/horoscope", methods=["POST"])
 def horoscope():
-    prenom = validate_content(request.form.get("prenom", ""))
-    nom = validate_content(request.form.get("nom", ""))
-    date = validate_date(request.form.get("date", ""))
+    prenom_raw = request.form.get("prenom")
+    nom_raw = request.form.get("nom")
+    date_raw = request.form.get("date")
+
+    # Validation "paramètre manquant"
+    if not prenom_raw:
+        return jsonify(error="parametre manquant : prenom"), 400
+    elif not nom_raw:
+        return jsonify(error="parametre manquant : nom"), 400
+    elif not date_raw:
+        return jsonify(error="parametre manquant : date"), 400
     
-    # Get zodiac sign from date
+    prenom = validate_content(prenom_raw)
+    nom = validate_content(nom_raw)
+    date = validate_date(date_raw)  # doit retourner "date invalide" si invalide (voir point 2)
+
     sign = get_zodiac_sign(date)
-    
-    # Get horoscope data
-    horoscope_data = HOROSCOPES.get(sign, {})
-    horoscope_text = horoscope_data.get("text", "Horoscope non disponible")
-    image = horoscope_data.get("image", "")
-    
-    # Generate HTML response
-    html_response = f"""
-    <h2>Bienvenue {prenom} {nom}!</h2>
-    <p>Votre signe: <strong>{sign}</strong></p>
-    <img src="./static/images/{image}" alt="{sign}" style="width: 150px; margin: 20px 0;">
-    <div style="text-align: left; max-width: 600px; margin: 0 auto;">
-        {horoscope_text}
-    </div>
-    """
-    
-    return html_response
+    data = HOROSCOPES.get(sign, {})
+    horoscope_text = data.get("text", "Horoscope non disponible")
+    image = data.get("image", "")
+
+    return jsonify(
+        prenom=prenom,
+        nom=nom,
+        date=date,
+        sign=sign,
+        image=image,
+        text=horoscope_text
+    )
+
 
 # Gestion des erreurs 404
 @app.errorhandler(404)
@@ -47,4 +57,4 @@ def page_not_found(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=8000, ssl_context='adhoc')

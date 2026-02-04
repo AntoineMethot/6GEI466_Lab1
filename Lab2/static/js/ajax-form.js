@@ -12,18 +12,25 @@ $(function () {
         $.ajax({
             type: "POST",
             url: "/horoscope",
-            data: {
-                prenom: prenom,
-                nom: nom,
-                date: date
-            },
-            success: function (response) {
-                // Cache form
+            data: { prenom, nom, date },
+            success: function (data) {
                 $("#horoscope-form").hide();
-                // SShow result
-                $("#horoscope-result").html(response).show();
-                // Show change identity
                 $("#change-identity").show();
+
+                const imgUrl = "/static/images/" + data.image;
+
+                $("#horoscope-result").html(`
+                <h2>Bienvenue ${data.prenom} ${data.nom}!</h2>
+                <p>Votre signe: <strong>${data.sign}</strong></p>
+                <p><a href="${imgUrl}" target="_blank">Voir l’image</a></p>
+                <img src="${imgUrl}" alt="${data.sign}" style="width:150px; margin:20px 0;">
+                <div style="text-align:left; max-width:600px; margin:0 auto;">${data.text}</div>
+                `).show();
+
+            },
+            error: function (xhr) {
+                // Afficher le message exact exigé par le serveur
+                $("#horoscope-result").html(`<div class="alert alert-danger">${xhr.responseText}</div>`).show();
             }
         });
     });

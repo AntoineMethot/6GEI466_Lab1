@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import send_from_directory, render_template, request, abort
+from flask import render_template, request, abort
 import re
 
 app = Flask(__name__)
